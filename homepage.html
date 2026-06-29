@@ -706,6 +706,76 @@ mark.search-hit {
 .machine-header .count { white-space: nowrap; }
 .tag-step { font-weight: 700; }
 
+
+/* ── PROCESSING DISPLAY TWEAK ── */
+.tag-step { font-weight: 700; }
+
+
+
+/* ── AREA BADGE/TAG COLORS + PROCESSING TIMELINE ── */
+.area-chip,
+.area-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.area-chip {
+  color: white;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.area-tag {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid transparent;
+}
+.area-chip.roll-pack,
+.area-tag.roll-pack {
+  background: #F59E0B;
+  color: #1A1612;
+  border-color: #D97706;
+}
+.area-chip.processing,
+.area-tag.processing {
+  background: #2563EB;
+  color: white;
+  border-color: #1D4ED8;
+}
+.processing-machine-section .alarm-detail.show {
+  background: var(--surface);
+}
+.processing-machine-section .checklist-flow h3 {
+  color: var(--muted);
+}
+.processing-machine-section .step-row {
+  gap: 12px;
+}
+.processing-machine-section .step-line-wrap {
+  width: 28px;
+}
+.processing-machine-section .step-dot.check1,
+.processing-machine-section .step-dot.check2,
+.processing-machine-section .step-dot.check3 {
+  background: #E8621A;
+}
+.processing-machine-section .step-body {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.processing-machine-section .step-label {
+  color: var(--orange);
+  font-size: 12px;
+  font-weight: 700;
+}
+.processing-machine-section .step-text {
+  color: var(--dark);
+  font-size: 14px;
+}
+
 </style>
 </head>
 <body>
@@ -755,7 +825,7 @@ mark.search-hit {
 
 <div id="content"></div>
 
-<footer>อัปเดตล่าสุด: 26 มิ.ย. 2569 · สอบถามหัวหน้าทีมก่อนทำการแก้ไขใดๆ --- หากพบข้อผิดพลาด โปรดทำการติดต่อ "กัญญมน อัจฉริยบุญยงค์ แผนก Engineering" เบอร์ 0982461246
+<footer>อัปเดตล่าสุด: 11 มิ.ย. 2569 · สอบถามหัวหน้าทีมก่อนทำการแก้ไขใดๆ --- หากพบข้อผิดพลาด โปรดทำการติดต่อ "กัญญมน อัจฉริยบุญยงค์ แผนก Engineering"
 </footer>
 
 
@@ -1490,6 +1560,92 @@ const DATA = {
       }
     ]
   }
+,
+
+  tempDropSterileProduction: {
+    machine: "Temp drop (Sterile/Production)",
+    images: [],
+    alarms: [
+      {
+        "id": 901,
+        "name": "แหล่งพลังงานไม่เพียงพอ หรือไม่ต่อเนื่องจนไม่สามารถคุมอุณหภูมิได้",
+        "icon": "error",
+        "causes": [
+          {
+            "check": 1,
+            "label": "Checklist 1 — โอกาสเกิดสูง",
+            "text": "ตรวจสอบ Main steam pressure drop (Boiler 16T/14T)"
+          },
+          {
+            "check": 2,
+            "label": "Checklist 2 — โอกาสเกิดปานกลาง",
+            "text": "ตรวจสอบกิจกรรมฝั่ง Boiler > เมื่อพร้อมแล้วจึงเริ่ม Sterile ใหม่"
+          },
+          {
+            "check": 3,
+            "label": "Checklist 3 — โอกาสเกิดต่ำ / ตรวจสอบเพิ่มเติม",
+            "text": "Steam condensate เยอะเนื่องจากหยุดผลิตหลายวัน > เดรนน้ำออกจากระบบ ที่ไลน์ AT, STM ทุกไลน์"
+          }
+        ],
+        "fixes": [
+          "เช็คแรงดัน Pressure gauge ก่อนเข้า (PRV) เทียบกับแรงดัน Steam supply แล้ว Setting ใหม่"
+        ]
+      },
+      {
+        "id": 902,
+        "name": "Control แรงดันพลังงานได้ไม่ดีเนื่องจากการอ่านแรงดันที่ผิดปกติ หรือสูญเสียแรงดันก่อนเข้าระบบ",
+        "icon": "warning",
+        "causes": [
+          {
+            "check": 1,
+            "label": "Checklist 1 — โอกาสเกิดสูง",
+            "text": "Pressure Reducing Valve (PRV) ทำงานได้ไม่เต็มประสิทธิภาพ"
+          },
+          {
+            "check": 2,
+            "label": "Checklist 2 — โอกาสเกิดปานกลาง",
+            "text": "ท่อ 3 ทาง Connecting แตก\nท่อ Syphon ตันจนทำให้อ่านแรงดันผิด\nน้ำในกระเปาะแห้ง"
+          },
+          {
+            "check": 3,
+            "label": "Checklist 3 — โอกาสเกิดต่ำ / ตรวจสอบเพิ่มเติม",
+            "text": "Safety valve เปิดค้างพ่นออกหลังคาโรงงาน\nTemperature sensor TT042, TT044 Offset ไม่ตรงกัน"
+          }
+        ],
+        "fixes": [
+          "เปลี่ยน Pressure gauge ที่อ่านไม่ตรง",
+          "ถอดทำความสะอาดฟิลเตอร์ใน PRV สกปรก",
+          "เปิด By-pass steam"
+        ]
+      },
+      {
+        "id": 903,
+        "name": "Loop น้ำมันร้อนถ่ายเทพลังงานได้ไม่เพียงพอ",
+        "icon": "info",
+        "causes": [
+          {
+            "check": 1,
+            "label": "Checklist 1 — โอกาสเกิดสูง",
+            "text": "Hot water loop / CV044 control ได้ไม่ดี"
+          },
+          {
+            "check": 2,
+            "label": "Checklist 2 — โอกาสเกิดปานกลาง",
+            "text": "Steam trap Loop น้ำร้อนตัน\nแรงดันน้ำ Loop น้ำร้อนต่ำกว่า set point\nTemp transmitter อ่านผิด"
+          },
+          {
+            "check": 3,
+            "label": "Checklist 3 — โอกาสเกิดต่ำ / ตรวจสอบเพิ่มเติม",
+            "text": "Flow rate น้ำร้อนอ่านค่าไม่ตรง\nปั้ม CP009, CP010 ทำ Flow ต่ำ\nPump หมุนกลับทาง"
+          }
+        ],
+        "fixes": [
+          "เช็คตำแหน่งก้านวาล์ว ประกอบสลับด้านหรือไม่ วาล์วเคลื่อนที่ไม่ดี",
+          "Set ZERO/SPAN"
+        ]
+      }
+    ]
+  }
 
 };
 
@@ -1509,7 +1665,10 @@ const AREA_INFO = {
   processing: { label: 'Processing' }
 };
 
-const SOURCE_AREA = Object.fromEntries(Object.keys(DATA).map(key => [key, 'rollPack']));
+const SOURCE_AREA = Object.assign(
+  Object.fromEntries(Object.keys(DATA).map(key => [key, 'rollPack'])),
+  { tempDropSterileProduction: 'processing' }
+);
 
 function getSourceAreaKey(sourceKey) {
   return SOURCE_AREA[sourceKey] || 'rollPack';
@@ -1518,6 +1677,12 @@ function getSourceAreaKey(sourceKey) {
 function getSourceAreaLabel(sourceKey) {
   const areaKey = getSourceAreaKey(sourceKey);
   return AREA_INFO[areaKey]?.label || 'Roll Pack';
+}
+
+
+function getAreaChipClass(sourceKey) {
+  const areaKey = getSourceAreaKey(sourceKey);
+  return areaKey === 'processing' ? 'processing' : 'roll-pack';
 }
 
 
@@ -1814,6 +1979,70 @@ function renderSteps(alarm) {
   }).join('');
 }
 
+
+function renderProcessingMachineSection(machine, list) {
+  const encodedMachine = encodeURIComponent(machine);
+  const isCollapsed = collapsedMachines.has(machine);
+  const machineImages = (list[0] && list[0]._images) ? list[0]._images : [];
+  const areaClass = getAreaChipClass(list[0]?._sourceKey);
+
+  let html = `<div class="machine-section processing-machine-section">
+    <div class="machine-header ${isCollapsed ? 'collapsed' : ''}" role="button" tabindex="0" aria-expanded="${!isCollapsed}" onclick="toggleMachine('${encodedMachine}')" onkeydown="handleMachineKey(event, '${encodedMachine}')">
+      <span>⚙️</span>
+      <h2>${highlightText(machine)}</h2>
+      <span class="count">${list.length}</span>
+      <span class="area-chip ${areaClass}">Area: ${escapeHtml(list[0]?._area || 'Processing')}</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="machine-body ${isCollapsed ? 'collapsed' : ''}">`;
+
+  if (machineImages.length) {
+    html += `<div class="reference-images">
+      <div class="reference-title">🖼️ ภาพประกอบสำหรับหัวข้อนี้</div>
+      <div class="image-grid">${renderReferenceImages(machineImages)}</div>
+      <div class="image-hint">แตะ/คลิกที่รูปเพื่อขยายภาพเต็มหน้าจอ</div>
+    </div>`;
+  }
+
+  list.forEach((alarm, index) => {
+    const cardKey = getCardKey(alarm, index);
+    const isOpen = openCards.has(cardKey);
+    const stepsHtml = renderSteps(alarm);
+    const fixesHtml = (alarm.fixes || []).map((f, i) =>
+      `<div class="fix-item"><span class="fix-num">${i + 1}.</span><span>${highlightText(f)}</span></div>`
+    ).join('');
+
+    html += `<div class="alarm-card">
+      <div class="alarm-header ${isOpen ? 'expanded' : ''}" role="button" tabindex="0" aria-expanded="${isOpen}" onclick="toggleCard('${cardKey}')" onkeydown="handleCardKey(event, '${cardKey}')">
+        <div class="alarm-icon ${escapeAttr(alarm.icon || 'info')}">${ICON_MAP[alarm.icon] || ICON_MAP.info}</div>
+        <div class="alarm-meta">
+          <div class="alarm-name">${highlightText(alarm.name || '')}</div>
+          <div class="alarm-tags">
+            <span class="area-tag ${getAreaChipClass(alarm._sourceKey)}">Area: ${escapeHtml(alarm._area || 'Processing')}</span>
+            <span class="tag tag-cause">${(alarm.causes || []).length} สาเหตุ</span>
+            <span class="tag tag-fix">${(alarm.fixes || []).length} วิธีแก้</span>
+            ${getSearchValue().trim() ? `<span class="tag tag-step">คะแนนค้นหา ${alarm._score || 0}</span>` : ''}
+          </div>
+        </div>
+        <span class="expand-btn" aria-hidden="true">${isOpen ? '▲' : '▼'}</span>
+      </div>
+      <div class="alarm-detail ${isOpen ? 'show' : ''}">
+        <div class="checklist-flow">
+          <h3>ขั้นตอนการตรวจสอบ</h3>
+          <div class="steps-timeline">${stepsHtml}</div>
+        </div>
+        <div class="fix-section">
+          <div class="fix-label">✅ สาเหตุ / การแก้ไข</div>
+          ${fixesHtml}
+        </div>
+      </div>
+    </div>`;
+  });
+
+  html += `</div></div>`;
+  return html;
+}
+
 function updateStats(alarms, totalAll) {
   const stats = document.getElementById('statsBar');
   const q = getSearchValue().trim();
@@ -1863,6 +2092,10 @@ function render() {
 
   let html = '';
   for (const [machine, list] of getSortedGroupEntries(groups)) {
+    if ((list[0]?._area || '') === 'Processing') {
+      html += renderProcessingMachineSection(machine, list);
+      continue;
+    }
     const encodedMachine = encodeURIComponent(machine);
     const isCollapsed = collapsedMachines.has(machine);
     const machineImages = (list[0] && list[0]._images) ? list[0]._images : [];
@@ -1871,7 +2104,7 @@ function render() {
       <div class="machine-header ${isCollapsed ? 'collapsed' : ''}" role="button" tabindex="0" aria-expanded="${!isCollapsed}" onclick="toggleMachine('${encodedMachine}')" onkeydown="handleMachineKey(event, '${encodedMachine}')">
         <span>⚙️</span>
         <h2>${highlightText(machine)}</h2>
-        <span class="count">Area: ${escapeHtml(list[0]?._area || 'Roll Pack')}</span>
+        <span class="area-chip ${getAreaChipClass(list[0]?._sourceKey)}">Area: ${escapeHtml(list[0]?._area || 'Roll Pack')}</span>
         <span class="count">${list.length}</span>
         <span class="chevron">▾</span>
       </div>
@@ -1899,7 +2132,7 @@ function render() {
           <div class="alarm-meta">
             <div class="alarm-name">${highlightText(alarm.name || '')}</div>
             <div class="alarm-tags">
-              <span class="tag tag-step">Area: ${escapeHtml(alarm._area || 'Roll Pack')}</span>
+              <span class="area-tag ${getAreaChipClass(alarm._sourceKey)}">Area: ${escapeHtml(alarm._area || 'Roll Pack')}</span>
               <span class="tag tag-cause">${(alarm.causes || []).length} สาเหตุ</span>
               <span class="tag tag-fix">${(alarm.fixes || []).length} วิธีแก้</span>
               ${getSearchValue().trim() ? `<span class="tag tag-step">คะแนนค้นหา ${alarm._score || 0}</span>` : ''}
